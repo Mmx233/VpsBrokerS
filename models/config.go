@@ -1,7 +1,12 @@
 package models
 
 type Config struct {
-	Mysql Mysql
+	Settings Settings
+	Mysql    Mysql
+}
+
+type Settings struct {
+	Port uint
 }
 
 type Mysql struct {
