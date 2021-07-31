@@ -3,6 +3,7 @@ package models
 type Config struct {
 	Settings Settings
 	Mysql    Mysql
+	Redis    Redis
 }
 
 type Settings struct {
@@ -16,4 +17,10 @@ type Mysql struct {
 	Port     uint
 	Database string
 	Arg      string
+}
+
+type Redis struct {
+	Addr     string
+	Password string
+	DB       int
 }
