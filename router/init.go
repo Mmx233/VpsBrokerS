@@ -7,4 +7,5 @@ var G *gin.Engine
 func init() {
 	gin.SetMode(gin.ReleaseMode)
 	G = gin.Default()
+
 }
