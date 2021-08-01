@@ -5,6 +5,30 @@ import (
 	"time"
 )
 
+func init() {
+	var wait float64
+	go func() {
+		for {
+			wait = 10
+			data := Online.GetMap()
+			data.Range(func(ip, value interface{}) bool {
+				d := value.(*onlineStack)
+				d.Lock.RLock()
+				if since := d.Seconds(); since > 10 {
+					Online.Down(ip.(string))
+				} else if since = 10 - since; since < wait {
+					wait = since
+				}
+				if d != nil {
+					d.Lock.RUnlock()
+				}
+				return true
+			})
+			time.Sleep(time.Duration(wait) * time.Second)
+		}
+	}()
+}
+
 type onlineStack struct {
 	Lock     sync.RWMutex
 	Timeline time.Time
@@ -24,10 +48,12 @@ func (a *onlineStack) Seconds() float64 {
 }
 
 type online struct {
-	data sync.Map
+	data *sync.Map
 }
 
-var Online online
+var Online = online{
+	data: &sync.Map{},
+}
 
 func (a *online) Up(ip string) {
 	a.data.Store(ip, &onlineStack{Timeline: time.Now()})
@@ -49,4 +75,8 @@ func (a *online) Continue(ip string) {
 		return
 	}
 	d.(*onlineStack).Continue()
+}
+
+func (a *online) GetMap() *sync.Map {
+	return a.data
 }
