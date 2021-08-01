@@ -13,4 +13,6 @@ func init() {
 	G = gin.Default()
 
 	G.Use(secure.Main(), middlewares.Auth())
+
+	routerClient(G.Group("/c"))
 }
