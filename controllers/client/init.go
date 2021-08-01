@@ -11,16 +11,10 @@ import (
 	"time"
 )
 
-type ws struct {
-	Upper websocket.Upgrader
-}
-
-var Websocket = ws{
-	Upper: websocket.Upgrader{
-		HandshakeTimeout: time.Minute,
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
+var upper = websocket.Upgrader{
+	HandshakeTimeout: time.Minute,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
 	},
 }
 
@@ -42,7 +36,7 @@ func Init(c *gin.Context) {
 		return
 	}
 
-	conn, err := Websocket.Upper.Upgrade(c.Writer, c.Request, nil)
+	conn, err := upper.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		// bad request
 		return
