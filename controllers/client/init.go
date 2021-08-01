@@ -1,7 +1,8 @@
-package client
+package controllers
 
 import (
 	"github.com/Mmx233/VpsBrokerS/controllers"
+	"github.com/Mmx233/VpsBrokerS/controllers/modules"
 	"github.com/Mmx233/VpsBrokerS/models/form"
 	"github.com/Mmx233/VpsBrokerS/service"
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,8 @@ func Init(c *gin.Context) {
 		controllers.CallBack.Error(c, 3)
 		return
 	}
+
+	modules.Online.Up(c.ClientIP())
 
 	controllers.CallBack.Default(c)
 }
