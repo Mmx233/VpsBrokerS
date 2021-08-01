@@ -6,5 +6,7 @@ type VpsInit struct {
 }
 
 type HeartBeat struct {
-	Time int64
+	Type     string
+	TargetIp string
+	Time     int64
 }
