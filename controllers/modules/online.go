@@ -56,7 +56,9 @@ var Online = online{
 }
 
 func (a *online) Up(ip string) {
-	a.data.Store(ip, &onlineStack{Timeline: time.Now()})
+	a.data.Store(ip, &onlineStack{
+		Timeline: time.Now(),
+	})
 }
 
 func (a *online) Down(ip string) {
@@ -75,6 +77,11 @@ func (a *online) Continue(ip string) {
 		return
 	}
 	d.(*onlineStack).Continue()
+}
+
+func (a *online) IsOnline(ip string) (ok bool) {
+	_, ok = a.data.Load(ip)
+	return
 }
 
 func (a *online) GetMap() *sync.Map {

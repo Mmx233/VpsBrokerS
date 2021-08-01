@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init(c *gin.Context) {
+func InitWs(c *gin.Context) {
 	var f form.VpsInit
 	if e := c.ShouldBind(&f); e != nil {
 		controllers.CallBack.Error(c, 2)
