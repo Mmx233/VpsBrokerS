@@ -6,26 +6,52 @@ import (
 )
 
 type pool struct {
-	Conn *sync.Map
+	Clients *sync.Map
+}
+
+type clientInfo struct {
+	Lock sync.RWMutex
+	Conn *websocket.Conn
+	Port uint
 }
 
 var Pool = pool{
-	Conn: &sync.Map{},
+	Clients: &sync.Map{},
 }
 
-func (a *pool) Add(ip string, conn *websocket.Conn) {
-	a.Conn.Store(ip, conn)
-}
-
-func (a *pool) Rm(ip string) {
-	t, ok := a.Conn.LoadAndDelete(ip)
+func (a *pool) Add(ip string, conn *websocket.Conn, port uint) {
+	d, ok := a.Clients.LoadOrStore(ip, &clientInfo{
+		Conn: conn,
+		Port: port,
+	})
 	if ok {
-		t = nil
-		_ = t
+		t := d.(*clientInfo)
+		t.Lock.Lock()
+		t.Conn = conn
+		t.Port = port
+		t.Lock.Unlock()
+
 	}
 }
 
-func (a *pool) Load(ip string) (*websocket.Conn, bool) {
-	conn, ok := a.Conn.Load(ip)
-	return conn.(*websocket.Conn), ok
+func (a *pool) Down(ip string) {
+	d, ok := a.Clients.Load(ip)
+	if ok {
+		t := d.(*clientInfo)
+		t.Lock.Lock()
+		t.Conn = nil
+		t.Lock.Unlock()
+	}
+}
+
+func (a *pool) Load(ip string) (*websocket.Conn, uint, bool) {
+	d, ok := a.Clients.Load(ip)
+	t := d.(*clientInfo)
+	t.Lock.RLock()
+	defer t.Lock.RUnlock()
+	return t.Conn, t.Port, ok
+}
+
+func (a *pool) SendListInfo() {
+
 }

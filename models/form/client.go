@@ -1,5 +1,10 @@
 package form
 
 type VpsInit struct {
-	Name string `json:"name" form:"name" binding:"required"`
+	Name string
+	Port uint
+}
+
+type HeartBeat struct {
+	Time int64
 }
