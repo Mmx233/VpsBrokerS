@@ -45,7 +45,6 @@ func Init(c *gin.Context) {
 	ip := c.ClientIP()
 
 	modules.Pool.Add(ip, conn, f.Port)
-	_ = conn.WriteJSON(modules.Pool.GetListInfo())
 
 	go func() {
 		defer func() {
