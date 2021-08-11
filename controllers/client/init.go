@@ -18,6 +18,7 @@ var upper = websocket.Upgrader{
 	},
 }
 
+// Init ws连接接口
 func Init(c *gin.Context) {
 	var f form.VpsInit
 	if e := c.ShouldBind(&f); e != nil {

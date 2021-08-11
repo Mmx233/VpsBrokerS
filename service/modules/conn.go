@@ -13,13 +13,15 @@ type clientInfo struct {
 	Lock    sync.RWMutex
 	Conn    *websocket.Conn
 	Port    uint
-	DownNum uint
+	DownNum uint //客户端连接中有几台发生down
 }
 
+// Pool  客户端连接池
 var Pool = pool{
 	Clients: &sync.Map{},
 }
 
+// Add 加入连接
 func (a *pool) Add(ip string, conn *websocket.Conn, port uint) {
 	d, ok := a.Clients.LoadOrStore(ip, &clientInfo{
 		Conn: conn,
@@ -37,6 +39,7 @@ func (a *pool) Add(ip string, conn *websocket.Conn, port uint) {
 	a.SendListInfoAll()
 }
 
+// Lose 连接失效
 func (a *pool) Lose(ip string) {
 	d, ok := a.Clients.Load(ip)
 	if ok {
@@ -49,6 +52,7 @@ func (a *pool) Lose(ip string) {
 	a.SendListInfoAll()
 }
 
+// ClientUp 上线记录
 func (a *pool) ClientUp(ip string) uint {
 	d, _ := a.Clients.Load(ip)
 	t := d.(*clientInfo)
@@ -58,6 +62,7 @@ func (a *pool) ClientUp(ip string) uint {
 	return t.DownNum
 }
 
+// ClientDown 掉线记录
 func (a *pool) ClientDown(ip string) uint {
 	d, _ := a.Clients.Load(ip)
 	t := d.(*clientInfo)
@@ -67,6 +72,7 @@ func (a *pool) ClientDown(ip string) uint {
 	return t.DownNum
 }
 
+// Load 读取连接
 func (a *pool) Load(ip string) (*websocket.Conn, uint, bool) {
 	d, ok := a.Clients.Load(ip)
 	t := d.(*clientInfo)
@@ -75,6 +81,7 @@ func (a *pool) Load(ip string) (*websocket.Conn, uint, bool) {
 	return t.Conn, t.Port, ok
 }
 
+// GetListInfo 获取客户端列表
 func (a *pool) GetListInfo() map[string]uint {
 	var data = make(map[string]uint)
 	a.Clients.Range(func(ip, t interface{}) bool {
@@ -88,6 +95,7 @@ func (a *pool) GetListInfo() map[string]uint {
 	return data
 }
 
+// SendListInfoAll 向所有客户端发送列表
 func (a *pool) SendListInfoAll() {
 	a.Clients.Range(func(ip, t interface{}) bool {
 		d := t.(*clientInfo)
@@ -107,6 +115,7 @@ func (a *pool) SendListInfoAll() {
 	})
 }
 
+// Len 池长度
 func (a *pool) Len() (i int) {
 	a.Clients.Range(func(key, value interface{}) bool {
 		i++

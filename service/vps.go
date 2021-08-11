@@ -4,6 +4,7 @@ import "github.com/Mmx233/VpsBrokerS/models/dao"
 
 type vps struct{}
 
+// Vps 客户端别名记录器
 var Vps vps
 
 func (*vps) NameExist(name string) (bool, string, error) {
