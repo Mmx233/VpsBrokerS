@@ -3,10 +3,9 @@ package dao
 import "gorm.io/gorm"
 
 type Vps struct {
-	ID     uint
-	Ip     string `gorm:"unique,index"`
-	Name   string
-	Online bool `gorm:"index"`
+	ID   uint
+	Ip   string `gorm:"unique,index"`
+	Name string
 }
 
 func (a Vps) Get() ([]Vps, error) {

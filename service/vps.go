@@ -28,3 +28,7 @@ func (a *vps) SetName(ip string, name string) error {
 	}
 	return t.UpdateName()
 }
+
+func (*vps) List() ([]dao.Vps, error) {
+	return dao.Vps{}.Get()
+}
