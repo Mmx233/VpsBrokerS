@@ -30,3 +30,17 @@ func (a *event) Up(ip string, Time int64) error {
 func (a *event) Down(ip string, Time int64) error {
 	return a.log("down", ip, Time, modules.Pool.ClientDown(ip))
 }
+
+func (a *event) CountDown(ip string) (int64, error) {
+	t1, e := dao.Event{Ip: ip}.CountDown()
+	if e != nil {
+		return 0, e
+	}
+
+	t2, e := dao.Event{Ip: ip}.CountUp()
+	if e != nil {
+		return 0, e
+	}
+
+	return t1 - t2, e
+}

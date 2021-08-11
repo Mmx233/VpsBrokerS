@@ -45,7 +45,17 @@ func Init(c *gin.Context) {
 
 	ip := c.ClientIP()
 
-	modules.Pool.Add(ip, conn, f.Port)
+	if modules.Pool.Add(ip, conn, f.Port) {
+		//启动后首次连接
+		n, e := service.Event.CountDown(ip)
+		if e != nil {
+			modules.Pool.Lose(ip)
+			controllers.CallBack.Error(c, 3)
+			return
+		}
+
+		modules.Pool.RecoverDownNum(ip, n)
+	}
 
 	go func() {
 		defer func() {
@@ -58,7 +68,6 @@ func Init(c *gin.Context) {
 			err := conn.ReadJSON(&data)
 			if err != nil {
 				// disconnected or timeout
-				_ = conn.Close()
 				modules.Pool.Lose(ip)
 				return
 			}

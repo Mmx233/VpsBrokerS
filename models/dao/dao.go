@@ -39,3 +39,8 @@ func defaultGet(t interface{}) error {
 func defaultGetWhitQuery(a interface{}, t interface{}) error {
 	return db.Where(a).Find(t).Error
 }
+
+func defaultCounter(t interface{}) (int64, error) {
+	var n int64
+	return n, db.Where(t).Count(&n).Error
+}

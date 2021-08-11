@@ -1,6 +1,8 @@
 package dao
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Event struct {
 	ID      uint
@@ -14,4 +16,12 @@ type Event struct {
 
 func (a *Event) Insert(tx *gorm.DB) error {
 	return defaultInsert(tx, a)
+}
+
+func (a Event) CountDown() (int64, error) {
+	return defaultCounter(&Event{Type: "down", Ip: a.Ip})
+}
+
+func (a Event) CountUp() (int64, error) {
+	return defaultCounter(&Event{Type: "up", Ip: a.Ip})
 }

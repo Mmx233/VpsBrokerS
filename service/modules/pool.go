@@ -22,7 +22,7 @@ var Pool = pool{
 }
 
 // Add 加入连接
-func (a *pool) Add(ip string, conn *websocket.Conn, port uint) {
+func (a *pool) Add(ip string, conn *websocket.Conn, port uint) bool {
 	d, ok := a.Clients.LoadOrStore(ip, &clientInfo{
 		Conn: conn,
 		Port: port,
@@ -33,10 +33,11 @@ func (a *pool) Add(ip string, conn *websocket.Conn, port uint) {
 		t.Conn = conn
 		t.Port = port
 		t.Lock.Unlock()
-
+	} else {
+		a.SendListInfoAll()
 	}
 
-	a.SendListInfoAll()
+	return !ok
 }
 
 // Lose 连接失效
@@ -45,6 +46,7 @@ func (a *pool) Lose(ip string) {
 	if ok {
 		t := d.(*clientInfo)
 		t.Lock.Lock()
+		_ = t.Conn.Close()
 		t.Conn = nil
 		t.Lock.Unlock()
 	}
@@ -70,6 +72,16 @@ func (a *pool) ClientDown(ip string) uint {
 	defer t.Lock.Unlock()
 	t.DownNum++
 	return t.DownNum
+}
+
+func (a *pool) RecoverDownNum(ip string, num int64) {
+	d, ok := a.Clients.Load(ip)
+	if ok {
+		t := d.(*clientInfo)
+		t.Lock.Lock()
+		t.DownNum = uint(num)
+		t.Lock.Unlock()
+	}
 }
 
 // Load 读取连接
