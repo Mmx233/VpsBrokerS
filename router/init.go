@@ -15,4 +15,5 @@ func init() {
 	G.Use(secure.Main(), middlewares.Auth())
 
 	routerClient(G.Group("/c"))
+	routerPanel(G.Group("/p"))
 }
