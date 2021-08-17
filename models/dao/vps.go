@@ -3,9 +3,10 @@ package dao
 import "gorm.io/gorm"
 
 type Vps struct {
-	ID   uint
-	Ip   string `gorm:"unique,index"`
-	Name string
+	ID   uint   `json:"id"`
+	Ip   string `json:"ip" gorm:"unique,index"`
+	Name string `json:"name"`
+	Port uint   `json:"port"`
 }
 
 func (a Vps) Get() ([]Vps, error) {
@@ -25,6 +26,6 @@ func (a *Vps) Find() error {
 	return defaultFind(a)
 }
 
-func (a *Vps) UpdateName() error {
+func (a *Vps) Update() error {
 	return db.Where(Vps{Ip: a.Ip}).Updates(a).Error
 }

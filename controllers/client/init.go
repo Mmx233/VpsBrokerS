@@ -32,7 +32,7 @@ func Init(c *gin.Context) {
 	} else if exist && ip != c.ClientIP() {
 		controllers.CallBack.Error(c, 4)
 		return
-	} else if e = service.Vps.SetName(c.ClientIP(), f.Name); e != nil {
+	} else if e = service.Vps.Set(c.ClientIP(), f.Name, f.Port); e != nil {
 		controllers.CallBack.Error(c, 3)
 		return
 	}

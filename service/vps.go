@@ -20,13 +20,13 @@ func (*vps) IpExist(ip string) bool {
 	return dao.Vps{Ip: ip}.Exist()
 }
 
-func (a *vps) SetName(ip string, name string) error {
-	t := dao.Vps{Ip: ip, Name: name}
+func (a *vps) Set(ip string, name string, port uint) error {
+	t := dao.Vps{Ip: ip, Name: name, Port: port}
 
 	if a.IpExist(ip) {
 		return t.Insert(nil)
 	}
-	return t.UpdateName()
+	return t.Update()
 }
 
 func (*vps) List() ([]dao.Vps, error) {
