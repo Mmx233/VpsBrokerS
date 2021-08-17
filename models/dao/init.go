@@ -3,6 +3,7 @@ package dao
 import (
 	"fmt"
 	"github.com/Mmx233/VpsBrokerS/global"
+	"github.com/Mmx233/daoUtil"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -50,4 +51,6 @@ func init() {
 	if err := db.AutoMigrate(); err != nil {
 		log.Fatalln(err)
 	}
+
+	daoUtil.Init(db)
 }

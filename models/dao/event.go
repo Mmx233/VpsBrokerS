@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"gorm.io/gorm"
+	"github.com/Mmx233/daoUtil"
 )
 
 type Event struct {
@@ -14,14 +14,14 @@ type Event struct {
 	Vps     Vps `gorm:"foreignKey:Ip,references:Ip,constraint:OnUpdate:CASCADE"`
 }
 
-func (a *Event) Insert(tx *gorm.DB) error {
-	return defaultInsert(tx, a)
+func (a *Event) Insert() error {
+	return daoUtil.DefaultInsert(a)
 }
 
 func (a Event) CountDown() (int64, error) {
-	return defaultCounter(&Event{Type: "down", Ip: a.Ip})
+	return daoUtil.DefaultCounter(&Event{Type: "down", Ip: a.Ip})
 }
 
 func (a Event) CountUp() (int64, error) {
-	return defaultCounter(&Event{Type: "up", Ip: a.Ip})
+	return daoUtil.DefaultCounter(&Event{Type: "up", Ip: a.Ip})
 }

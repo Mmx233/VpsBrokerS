@@ -1,5 +1,7 @@
 github.com/Mmx233/config v0.0.2 h1:8rXDKDrSr++H/MIRaIgXWB+9scw5j0BdYrINpg6P5UE=
 github.com/Mmx233/config v0.0.2/go.mod h1:Zfn14/GfiiBz9zTPepuURgkanX5qh2QtP+cciJ8bAUw=
+github.com/Mmx233/daoUtil v0.0.6 h1:K/ycfEWU5hgdr+rOhoRT77XAgROjKrxMsMywktGQXhI=
+github.com/Mmx233/daoUtil v0.0.6/go.mod h1:V71MImSufyrAVM9DfwJmSGkuuCPZnDPBuEIrmijFQKA=
 github.com/Mmx233/secure v0.0.2 h1:tyhp1c6g1oFoys/J3r364BVoTwLcHjp4V+BTwihjgG8=
 github.com/Mmx233/secure v0.0.2/go.mod h1:DXQl9knodYQU9YYi7IZYmVZ4BdMOOriAC98nN8HvXnA=
 github.com/Mmx233/tool v0.1.6 h1:arb4lxlY/On7tgmz6brADeQC3+qXfzzC5FYsti71g3Y=

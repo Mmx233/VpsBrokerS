@@ -16,6 +16,10 @@ func (*vps) NameExist(name string) (bool, string, error) {
 	return true, t.Name, nil
 }
 
+func (*vps) IdExist(id uint) bool {
+
+}
+
 func (*vps) IpExist(ip string) bool {
 	return dao.Vps{Ip: ip}.Exist()
 }
@@ -24,7 +28,7 @@ func (a *vps) Set(ip string, name string, port uint) error {
 	t := dao.Vps{Ip: ip, Name: name, Port: port}
 
 	if a.IpExist(ip) {
-		return t.Insert(nil)
+		return t.Insert()
 	}
 	return t.Update()
 }

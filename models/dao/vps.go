@@ -1,9 +1,13 @@
 package dao
 
-import "gorm.io/gorm"
+import (
+	"github.com/Mmx233/daoUtil"
+	"gorm.io/gorm"
+)
 
 type Vps struct {
-	ID   uint   `json:"id"`
+	ID uint `json:"id"`
+	gorm.DeletedAt
 	Ip   string `json:"ip" gorm:"unique,index"`
 	Name string `json:"name"`
 	Port uint   `json:"port"`
@@ -11,19 +15,19 @@ type Vps struct {
 
 func (a Vps) Get() ([]Vps, error) {
 	var t = make([]Vps, 0)
-	return t, defaultGetWhitQuery(&a, &t)
+	return t, daoUtil.DefaultGetWhitQuery(&a, &t)
 }
 
-func (a *Vps) Insert(tx *gorm.DB) error {
-	return defaultInsert(tx, a)
+func (a *Vps) Insert() error {
+	return daoUtil.DefaultInsert(a)
 }
 
 func (a Vps) Exist() bool {
-	return defaultExist(&a)
+	return daoUtil.DefaultExist(&a)
 }
 
 func (a *Vps) Find() error {
-	return defaultFind(a)
+	return daoUtil.DefaultFind(a)
 }
 
 func (a *Vps) Update() error {

@@ -18,7 +18,7 @@ func (*event) log(Type string, ip string, Time int64, downNum uint) error {
 		DownNum: downNum,
 		AllNum:  uint(modules.Pool.Len()),
 	}
-	return t.Insert(nil)
+	return t.Insert()
 }
 
 // Up 连接恢复事件
