@@ -33,3 +33,7 @@ func (a *Vps) Find() error {
 func (a *Vps) Update() error {
 	return db.Where(Vps{Ip: a.Ip}).Updates(a).Error
 }
+
+func (a Vps) Delete() error {
+	return daoUtil.DefaultDelete(&a)
+}

@@ -17,7 +17,7 @@ func (*vps) NameExist(name string) (bool, string, error) {
 }
 
 func (*vps) IdExist(id uint) bool {
-
+	return dao.Vps{ID: id}.Exist()
 }
 
 func (*vps) IpExist(ip string) bool {
@@ -35,4 +35,8 @@ func (a *vps) Set(ip string, name string, port uint) error {
 
 func (*vps) List() ([]dao.Vps, error) {
 	return dao.Vps{}.Get()
+}
+
+func (*vps) Del(id uint) error {
+	return dao.Vps{ID: id}.Delete()
 }
