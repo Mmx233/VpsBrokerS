@@ -7,9 +7,8 @@ type Config struct {
 }
 
 type Settings struct {
-	Port       uint
-	ClientPort uint
-	AccessKey  string
+	Port      uint
+	AccessKey string
 }
 
 type Mysql struct {
