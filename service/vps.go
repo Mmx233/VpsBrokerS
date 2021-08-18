@@ -13,7 +13,7 @@ func (*vps) NameExist(name string) (bool, string, error) {
 		return false, "", e
 	}
 
-	return true, t.Name, nil
+	return t.ID != 0, t.Name, nil
 }
 
 func (*vps) IdExist(id uint) bool {
