@@ -118,21 +118,12 @@ func (a *pool) GetListInfo() map[string]uint {
 func (a *pool) SendListInfoAll() {
 	a.Clients.Range(func(ip, t interface{}) bool {
 		d := t.(*clientInfo)
-		i := 0
-		for {
-			if d.Conn == nil {
-				continue
-			}
-			if d.Conn.WriteJSON(a.GetListInfo()) == nil {
-				break
-			} else {
-				if i >= 5 {
-					break
-				}
-				i++
+		if d.Conn != nil {
+			if d.Conn.WriteJSON(a.GetListInfo()) != nil {
+				a.Lose(ip.(string))
+				return false
 			}
 		}
-
 		return true
 	})
 }

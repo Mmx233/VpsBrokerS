@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/Mmx233/config v0.0.2
-	github.com/Mmx233/daoUtil v0.0.6
+	github.com/Mmx233/daoUtil v0.0.7
 	github.com/Mmx233/secure v0.0.2
 	github.com/Mmx233/tool v0.1.6
 	github.com/gin-gonic/gin v1.7.2
