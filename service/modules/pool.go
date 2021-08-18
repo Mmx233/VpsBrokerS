@@ -57,8 +57,6 @@ func (a *pool) Lose(ip string) {
 		util.Event.LostClient(t.Name)
 		t.Lock.Unlock()
 	}
-
-	a.SendListInfoAll()
 }
 
 // ClientUp 上线记录

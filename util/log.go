@@ -10,7 +10,7 @@ type event struct{}
 var Event event
 
 func (*event) e(name string, content string) {
-	log.Println(fmt.Sprintf("[%s]%s", name, content))
+	log.Println(fmt.Sprintf("[%s] %s", name, content))
 }
 
 func (a *event) NewClientConn(name string) {

@@ -58,6 +58,8 @@ func Init(c *gin.Context) {
 		modules.Pool.RecoverDownNum(ip, n)
 	}
 
+	_ = conn.WriteJSON(modules.Pool.GetListInfo())
+
 	go func() {
 		defer func() {
 			recover()
