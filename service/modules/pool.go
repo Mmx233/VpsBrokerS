@@ -120,6 +120,9 @@ func (a *pool) SendListInfoAll() {
 		d := t.(*clientInfo)
 		i := 0
 		for {
+			if d.Conn == nil {
+				continue
+			}
 			if d.Conn.WriteJSON(a.GetListInfo()) == nil {
 				break
 			} else {
