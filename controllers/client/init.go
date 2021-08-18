@@ -46,7 +46,7 @@ func Init(c *gin.Context) {
 
 	ip := c.ClientIP()
 
-	if modules.Pool.Add(ip, conn, f.Port) {
+	if modules.Pool.Add(ip, conn, f.Name, f.Port) {
 		//启动后首次连接
 		n, e := service.Event.CountDown(ip)
 		if e != nil {

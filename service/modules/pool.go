@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"github.com/Mmx233/VpsBrokerS/util"
 	"github.com/gorilla/websocket"
 	"sync"
 )
@@ -12,6 +13,7 @@ type pool struct {
 type clientInfo struct {
 	Lock    sync.RWMutex
 	Conn    *websocket.Conn
+	Name    string
 	Port    uint
 	DownNum uint //客户端连接中有几台发生down
 }
@@ -22,20 +24,24 @@ var Pool = pool{
 }
 
 // Add 加入连接
-func (a *pool) Add(ip string, conn *websocket.Conn, port uint) bool {
+func (a *pool) Add(ip string, conn *websocket.Conn, name string, port uint) bool {
 	d, ok := a.Clients.LoadOrStore(ip, &clientInfo{
 		Conn: conn,
+		Name: name,
 		Port: port,
 	})
 	if ok {
 		t := d.(*clientInfo)
 		t.Lock.Lock()
 		t.Conn = conn
+		t.Name = name
 		t.Port = port
 		t.Lock.Unlock()
 	} else {
 		a.SendListInfoAll()
 	}
+
+	util.Event.NewClientConn(name)
 
 	return !ok
 }
@@ -48,6 +54,7 @@ func (a *pool) Lose(ip string) {
 		t.Lock.Lock()
 		_ = t.Conn.Close()
 		t.Conn = nil
+		util.Event.LostClient(t.Name)
 		t.Lock.Unlock()
 	}
 
