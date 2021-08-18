@@ -11,7 +11,6 @@ type Event struct {
 	Ip      string `gorm:"index,not null"`
 	DownNum uint
 	AllNum  uint
-	Vps     Vps `gorm:"foreignKey:Ip,references:Ip,constraint:OnUpdate:CASCADE"`
 }
 
 func (a *Event) Insert() error {

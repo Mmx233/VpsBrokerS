@@ -6,11 +6,11 @@ import (
 )
 
 type Vps struct {
-	ID uint `json:"id"`
-	gorm.DeletedAt
-	Ip   string `json:"ip" gorm:"unique,index"`
-	Name string `json:"name"`
-	Port uint   `json:"port"`
+	ID      uint           `json:"id"`
+	Deleted gorm.DeletedAt `json:"deleted"`
+	Ip      string         `json:"ip" gorm:"unique,index"`
+	Name    string         `json:"name"`
+	Port    uint           `json:"port"`
 }
 
 func (a Vps) Get() ([]Vps, error) {
