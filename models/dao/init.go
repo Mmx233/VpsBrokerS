@@ -48,7 +48,10 @@ func init() {
 		sqlDB.SetConnMaxLifetime(time.Hour * 5)
 	}
 	//自动迁移
-	if err := db.AutoMigrate(); err != nil {
+	if err := db.AutoMigrate(
+		&Event{},
+		&Vps{},
+	); err != nil {
 		log.Fatalln(err)
 	}
 

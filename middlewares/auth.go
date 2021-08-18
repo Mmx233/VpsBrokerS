@@ -8,7 +8,7 @@ import (
 func Auth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		if c.GetHeader("Authorization") != global.Config.Settings.AccessKey {
-			c.Abort()
+			c.AbortWithStatus(403)
 		}
 	}
 }
