@@ -40,6 +40,7 @@ func Init(c *gin.Context) {
 	conn, err := upper.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		// bad request
+		c.AbortWithStatus(400)
 		return
 	}
 
