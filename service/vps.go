@@ -28,9 +28,9 @@ func (a *vps) Set(ip string, name string, port uint) error {
 	t := dao.Vps{Ip: ip, Name: name, Port: port}
 
 	if a.IpExist(ip) {
-		return t.Insert()
+		return t.Update()
 	}
-	return t.Update()
+	return t.Insert()
 }
 
 func (*vps) List() ([]dao.Vps, error) {
