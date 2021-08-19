@@ -20,3 +20,11 @@ func (a *event) NewClientConn(name string) {
 func (a *event) LostClient(name string) {
 	a.e("client", name+" 连接断开")
 }
+
+func (a *event) Up(name string) {
+	a.e("up", name+" 在线率上升")
+}
+
+func (a *event) Down(name string) {
+	a.e("down", name+" 在线率下降")
+}

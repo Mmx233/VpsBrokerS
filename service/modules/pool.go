@@ -134,3 +134,11 @@ func (a *pool) Len() (i int) {
 	})
 	return
 }
+
+func (a *pool) GetName(ip string) string {
+	d, _ := a.Clients.Load(ip)
+	t := d.(*clientInfo)
+	t.Lock.RLock()
+	defer t.Lock.RUnlock()
+	return t.Name
+}
